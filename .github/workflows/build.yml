@@ -1,0 +1,37 @@
+name: Build and Deploy Bookmarklets
+
+on:
+  push:
+    paths:
+      - 'js/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate JSON manifest
+        run: |
+          if [ -f "scripts/generate-json.js" ]; then
+            node scripts/generate-json.js
+          else
+            echo "scripts/generate-json.js not found. Skipping generation."
+          fi
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.io"
+          git add manifest.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: auto-update manifest.json [skip ci]" && git push)
