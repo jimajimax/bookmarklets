@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="description" content="便利なBookmarkletをまとめたツール集">
+    <meta name="theme-color" content="#18181b">
+    <title>便利なBookmarklets一覧</title>
+
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f4f4f5;
+            --surface: rgba(255, 255, 255, .78);
+            --solid: #fff;
+            --text: #18181b;
+            --sub: #52525b;
+            --muted: #a1a1aa;
+            --border: rgba(24, 24, 27, .08);
+            --primary: #52525b;
+            --primary2: #3f3f46;
+            --primary-bg: #f4f4f5;
+            --success: #16a34a;
+            --max: 1180px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, .05);
+            --radius: 16px
+        }
+
+        :root[data-theme=dark] {
+            color-scheme: dark;
+            --bg: #09090b;
+            --surface: rgba(24, 24, 27, .78);
+            --solid: #121214;
+            --text: #f4f4f5;
+            --sub: #a1a1aa;
+            --muted: #71717a;
+            --border: rgba(255, 255, 255, .08);
+            --primary: #a1a1aa;
+            --primary2: #71717a;
+            --primary-bg: rgba(113, 113, 122, .15);
+            --success: #4ade80;
+            --shadow: 0 10px 35px rgba(0, 0, 0, .3)
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root:not([data-theme=light]) {
+                color-scheme: dark;
+                --bg: #09090b;
+                --surface: rgba(24, 24, 27, .78);
+                --solid: #121214;
+                --text: #f4f4f5;
+                --sub: #a1a1aa;
+                --muted: #71717a;
+                --border: rgba(255, 255, 255, .08);
+                --primary: #a1a1aa;
+                --primary2: #71717a;
+                --primary-bg: rgba(113, 113, 122, .15);
+                --success: #4ade80;
+                --shadow: 0 10px 35px rgba(0, 0, 0, .3)
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 15% 0%, rgba(113, 113, 122, .06), transparent 28rem), radial-gradient(circle at 90% 15%, rgba(82, 82, 91, .04), transparent 30rem), var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(113, 113, 122, .12) 1px, transparent 1px), linear-gradient(90deg, rgba(113, 113, 122, .12) 1px, transparent 1px);
+            background-size: 32px 32px;
+            mask-image: linear-gradient(to bottom, #000, transparent 75%);
+            z-index: -1
+        }
+
+        button,
+        input {
+            font: inherit
+        }
+
+        header {
+            padding: 24px 20px 72px;
+            text-align: center;
+            position: relative
+        }
+
+        .theme-switch {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            transition: .18s
+        }
+
+        .theme-switch:hover {
+            transform: scale(1.05)
+        }
+
+        .header-inner {
+            max-width: 850px;
+            margin: auto
+        }
+
+        .hero-title {
+            margin-top: 24px;
+            font-size: clamp(2.25rem, 6vw, 4.5rem);
+            line-height: 1.02;
+            font-weight: 800;
+            letter-spacing: -.055em
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, var(--text), var(--sub));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        .hero-description {
+            max-width: 620px;
+            margin: 22px auto 0;
+            color: var(--sub);
+            font-size: clamp(.95rem, 2vw, 1.1rem)
+        }
+
+        .toolbar {
+            position: relative;
+            z-index: 10;
+            max-width: 760px;
+            margin: -28px auto 42px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .08)
+        }
+
+        .search {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 12px
+        }
+
+        .search-icon {
+            flex: none;
+            color: var(--muted)
+        }
+
+        .search input {
+            width: 100%;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: var(--text);
+            font-size: .95rem
+        }
+
+        .search input::placeholder {
+            color: var(--muted)
+        }
+
+        main {
+            width: min(calc(100% - 32px), var(--max));
+            margin: 0 auto 80px
+        }
+
+        .section-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 750;
+            letter-spacing: -.025em
+        }
+
+        .tool-count {
+            color: var(--muted);
+            font-size: .82rem
+        }
+
+        #container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 16px
+        }
+
+        .card {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+            transition: .18s cubic-bezier(.2, .8, .2, 1);
+            animation: cardIn .4s both
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(113, 113, 122, .3);
+            box-shadow: var(--shadow)
+        }
+
+        .card.disabled {
+            opacity: .55
+        }
+
+        .card.disabled:hover {
+            transform: none
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px
+        }
+
+        .card-title {
+            min-width: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.35
+        }
+
+        .badge {
+            flex: none;
+            padding: 4px 9px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--primary-bg);
+            color: var(--primary);
+            font-size: .68rem;
+            font-weight: 700;
+            white-space: nowrap
+        }
+
+        .card-desc {
+            min-height: 66px;
+            margin-bottom: 18px;
+            color: var(--sub);
+            font-size: .86rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden
+        }
+
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px
+        }
+
+        .tag {
+            padding: 3px 7px;
+            border-radius: 6px;
+            background: rgba(113, 113, 122, .08);
+            color: var(--muted);
+            font-size: .66rem
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .bm-link-wrapper {
+            display: flex;
+            gap: 8px;
+            width: 100%
+        }
+
+        .bm-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            min-height: 44px;
+            padding: 10px 14px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            color: #fff;
+            text-decoration: none;
+            font-size: .85rem;
+            font-weight: 700;
+            box-shadow: 0 5px 14px rgba(0, 0, 0, .08);
+            cursor: grab;
+            transition: .18s
+        }
+
+        .bm-link:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .12)
+        }
+
+        .bm-link:active {
+            transform: translateY(1px)
+        }
+
+        .bm-link:focus-visible {
+            outline: 3px solid rgba(113, 113, 122, .45);
+            outline-offset: 3px
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            min-height: 44px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .04);
+            transition: .18s;
+            flex: none
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-bg);
+            transform: translateY(-1px)
+        }
+
+        .copy-btn svg {
+            width: 20px;
+            height: 20px
+        }
+
+        .card.disabled .bm-link,
+        .card.disabled .copy-btn {
+            background: #a1a1aa;
+            border-color: #a1a1aa;
+            color: #fff;
+            box-shadow: none;
+            pointer-events: none;
+            cursor: not-allowed
+        }
+
+        .notice {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            text-align: center;
+            font-size: .67rem
+        }
+
+        .empty {
+            grid-column: 1/-1;
+            padding: 60px 20px;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+            color: var(--sub);
+            text-align: center
+        }
+
+        .guide {
+            margin-top: 80px
+        }
+
+        .guide-card {
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            background: var(--surface);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .03)
+        }
+
+        .guide-title {
+            padding: 22px 24px;
+            font-size: 1.15rem;
+            font-weight: 750
+        }
+
+        details {
+            border-top: 1px solid var(--border)
+        }
+
+        summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 24px;
+            cursor: pointer;
+            list-style: none;
+            font-weight: 650
+        }
+
+        summary::-webkit-details-marker {
+            display: none
+        }
+
+        summary:after {
+            content: "＋";
+            color: var(--muted);
+            font-size: 1.2rem;
+            transition: .18s
+        }
+
+        details[open] summary:after {
+            transform: rotate(45deg)
+        }
+
+        summary:hover {
+            background: rgba(113, 113, 122, .04)
+        }
+
+        .guide-content {
+            padding: 0 24px 24px;
+            color: var(--sub);
+            font-size: .88rem
+        }
+
+        .guide-content ol {
+            padding-left: 1.4rem
+        }
+
+        .guide-content li {
+            margin-bottom: 8px
+        }
+
+        .guide-note {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 10px;
+            background: var(--primary-bg);
+            color: var(--sub);
+            font-size: .8rem
+        }
+
+        .privacy {
+            max-width: 760px;
+            margin: 24px auto 0;
+            color: var(--muted);
+            text-align: center;
+            font-size: .76rem
+        }
+
+        footer {
+            margin-top: 120px;
+            padding: 80px 20px 48px;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            color: var(--sub);
+            font-size: .95rem;
+            position: relative;
+            overflow: hidden
+        }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            border-radius: 99px
+        }
+
+        .footer-inner-wrapper {
+            max-width: var(--max);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 50px
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 40px;
+            flex-wrap: wrap
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 380px
+        }
+
+        .footer-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .footer-logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--text);
+            letter-spacing: -.03em
+        }
+
+        .footer-badge {
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: var(--primary-bg);
+            border: 1px solid var(--border);
+            font-size: .7rem;
+            font-weight: 700;
+            color: var(--primary)
+        }
+
+        .footer-brand p {
+            font-size: .9rem;
+            color: var(--sub);
+            line-height: 1.5
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap
+        }
+
+        .footer-nav-col {
+            display: flex;
+            flex-direction: column;
+            gap: 14px
+        }
+
+        .footer-nav-title {
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: .05em;
+            text-transform: uppercase
+        }
+
+        .footer-nav-col a {
+            color: var(--sub);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: .9rem;
+            transition: color .18s, transform .18s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .footer-nav-col a:hover {
+            color: var(--text);
+            transform: translateX(2px)
+        }
+
+        .footer-divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border)
+        }
+
+        .footer-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 20px
+        }
+
+        .footer-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px
+        }
+
+        .footer-copyright {
+            font-weight: 600;
+            color: var(--text);
+            font-size: .9rem
+        }
+
+        .footer-disclaimer {
+            font-size: .85rem;
+            line-height: 1.7;
+            color: var(--muted);
+            max-width: 850px
+        }
+
+        @media(max-width:768px) {
+            footer {
+                padding: 50px 16px 36px;
+                margin-top: 80px
+            }
+
+            .footer-main {
+                flex-direction: column;
+                gap: 36px
+            }
+
+            .footer-nav {
+                gap: 30px;
+                width: 100%;
+                justify-content: space-between
+            }
+
+            .footer-meta-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px
+            }
+        }
+
+        .toast-container {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            z-index: 9999;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: min(calc(100% - 32px), 420px);
+            pointer-events: none
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--solid);
+            color: var(--text);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .15);
+            backdrop-filter: blur(18px);
+            font-size: .88rem;
+            font-weight: 600;
+            animation: toastIn .25s both
+        }
+
+        .toast-icon {
+            display: grid;
+            place-items: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(22, 163, 74, .12);
+            color: var(--success);
+            flex: none
+        }
+
+        .toast-icon svg {
+            width: 14px;
+            height: 14px
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(.96)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        @media(max-width:640px) {
+            header {
+                padding: 20px 18px 62px
+            }
+
+            .hero-title {
+                font-size: 2.5rem
+            }
+
+            .hero-description {
+                font-size: .9rem
+            }
+
+            .toolbar {
+                width: calc(100% - 24px);
+                margin: -30px auto 34px;
+                border-radius: 15px
+            }
+
+            main {
+                width: calc(100% - 24px)
+            }
+
+            #container {
+                grid-template-columns: 1fr
+            }
+
+            .section-header {
+                align-items: center
+            }
+
+            .guide {
+                margin-top: 60px
+            }
+
+            summary,
+            .guide-content,
+            .guide-title {
+                padding-left: 18px;
+                padding-right: 18px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            *,
+            *:before,
+            *:after {
+                scroll-behavior: auto !important;
+                animation: none !important;
+                transition: none !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <button id="theme-switch" class="theme-switch" aria-label="テーマ切替">
+            <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <path
+                    d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42">
+                </path>
+            </svg>
+        </button>
+        <div class="header-inner">
+            <h1 class="hero-title">いつものページを<br><span>もっと便利に。</span></h1>
+            <p class="hero-description">インストール不要ですぐ使える便利なBookmarkletをまとめました。<br>PC・iPhone・iPad・Androidに対応しています。</p>
+        </div>
+    </header>
+
+    <div class="toolbar">
+        <div class="search">
+            <svg class="search-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-4-4"></path>
+            </svg>
+            <input id="search" type="search" placeholder="ツールを検索…" autocomplete="off" aria-label="Bookmarkletを検索">
+        </div>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <defs>
+            <symbol id="copy-icon" viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"
+                    fill="none" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2"
+                    fill="none" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <defs>
+            <symbol id="copy-icon-success" viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2.5" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <defs>
+            <symbol id="copy-icon-fail" viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <main>
+        <div class="section-header">
+            <h2 class="section-title">Bookmarklets</h2>
+            <span id="tool-count" class="tool-count">読み込み中…</span>
+        </div>
+
+        <div id="container">
+            <div class="empty">ツールを読み込んでいます…</div>
+        </div>
+
+        <section class="guide">
+            <div class="guide-card">
+                <h2 class="guide-title">使い方</h2>
+
+                <details>
+                    <summary>iPhone・iPad Safari</summary>
+                    <div class="guide-content">
+                        <ol>
+                            <li>使用したいBookmarkletのボタンをタップしてコードをコピーします。</li>
+                            <li>Safariの共有ボタン、または「…」から「ブックマークに追加」を選択します。</li>
+                            <li>ブックマークを編集し、URL欄をすべて削除します。</li>
+                            <li>コピーしたBookmarkletコードをURL欄に貼り付けます。</li>
+                            <li>実行したいページを開き、ブックマーク一覧から登録したBookmarkletをタップします。</li>
+                        </ol>
+                        <div class="guide-note">ページをリロード・更新した場合は、再度Bookmarkletを実行してください。</div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>iPhone・iPad Chromeなど</summary>
+                    <div class="guide-content">
+                        <ol>
+                            <li>使用したいBookmarkletのボタンをタップしてコードをコピーします。</li>
+                            <li>ブラウザの「…」から「ブックマークに追加」を選択します。</li>
+                            <li>ブックマークを編集し、タイトルを好きな名前に変更します。</li>
+                            <li>URL欄をすべて削除し、コピーしたコードを貼り付けます。</li>
+                            <li>実行したいページを開き、アドレスバーに付けた名前を入力します。</li>
+                            <li>検索候補に表示されたBookmarkletをタップして実行します。</li>
+                        </ol>
+                        <div class="guide-note">ページをリロード・更新した場合は、再度Bookmarkletを実行してください。</div>
+                        <div class="guide-note">ブックマーク一覧から登録したBookmarkletを選択して実行する方法もあります。</div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Android</summary>
+                    <div class="guide-content">
+                        <ol>
+                            <li>使用したいBookmarkletのボタンをタップしてコードをコピーします。</li>
+                            <li>ブラウザの「︙」から☆アイコンをタップしてブックマークを追加します。</li>
+                            <li>ブックマークを編集し、タイトルを好きな名前に変更します。</li>
+                            <li>URL欄をすべて削除し、コピーしたコードを貼り付けます。</li>
+                            <li>実行したいページを開き、アドレスバーに付けた名前を入力します。</li>
+                            <li>検索候補に表示されたBookmarkletをタップして実行します。</li>
+                        </ol>
+                        <div class="guide-note">ページをリロード・更新した場合は、再度Bookmarkletを実行してください。</div>
+                        <div class="guide-note">ブックマーク一覧から登録したBookmarkletを選択して実行することもできます。</div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>PC（Chrome / Edge / Firefox / Safari）</summary>
+                    <div class="guide-content">
+                        <ol>
+                            <li>ブックマークバーを表示します。</li>
+                            <li>Bookmarkletボタンをブックマークバーへドラッグ＆ドロップします。</li>
+                            <li>実行したいページを開きます。</li>
+                            <li>ブックマークバーから登録したBookmarkletをクリックします。</li>
+                        </ol>
+                        <div class="guide-note">ページをリロード・更新した場合は、再度Bookmarkletを実行してください。</div>
+                        <div class="guide-note">Windowsは Ctrl + Shift + B、Macは ⌘ + Shift + B でブックマークバーを表示できます。</div>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>その他のデバイス</summary>
+                    <div class="guide-content">
+                        <ol>
+                            <li>Bookmarkletコードをコピーします。</li>
+                            <li>ブラウザのメニューから「ブックマークに追加」を選択します。</li>
+                            <li>追加したブックマークを編集します。</li>
+                            <li>URL欄をBookmarkletコードに置き換えます。</li>
+                            <li>実行したいページでブックマークを開きます。</li>
+                        </ol>
+                        <div class="guide-note">ページをリロード・更新した場合は、再度Bookmarkletを実行してください。</div>
+                        <div class="guide-note">ブラウザによってはBookmarkletが正常に動作しない場合があります。その場合はSafariまたはChromeをお試しください。</div>
+                    </div>
+                </details>
+            </div>
+
+            <p class="privacy">個人情報を収集・保存することはありません。Bookmarkletの実行は利用者ご自身の責任において行ってください。</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner-wrapper">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <div class="footer-logo-area">
+                        <span class="footer-logo">Bookmarklets Collection</span>
+                    </div>
+                    <p>ウェブブラウジングを、もっと便利に、もっと快適に。</p>
+                </div>
+                <div class="footer-nav">
+                    <div class="footer-nav-col">
+                        <span class="footer-nav-title">Links</span>
+                        <a href="https://github.com/jimajimax/bookmarklets/" target="_blank"
+                            rel="noopener noreferrer">GitHub ↗</a>
+                        <a href="https://x.com/messages/compose?recipient_id=1817905403663171584" target="_blank"
+                            rel="noopener noreferrer">Contact ↗</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <div class="footer-meta-row">
+                    <p style="margin:0">バグ、不具合、要望などは<a
+                            href="https://x.com/messages/compose?recipient_id=1817905403663171584" target="_blank"
+                            rel="noopener noreferrer"
+                            style="color:var(--text);text-decoration:underline;font-weight:600;">こちら</a>までお願いします。</p>
+                    <p style="margin:0" class="footer-copyright">Copyright © 2026 jimajimax All Rights Reserved.</p>
+                </div>
+                <p class="footer-disclaimer" style="margin:0">
+                    本スクリプトの実行は利用者ご自身の責任において行ってください。サイトの仕様変更等により動作しなくなる場合があります。本スクリプトの利用によって生じた、アクセス制限、アカウント停止など、いかなる直接的・間接的トラブルや損失に対しても、開発者は一切の責任を負いません。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+        const repoOwner = "jimajimax", repoName = "bookmarklets", baseUrl = `https://${repoOwner}.github.io/${repoName}/`;
+        let bookmarklets = [];
+
+        function escapeHtml(value) { return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") }
+
+        function showToast(message) {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            toast.innerHTML = `<span class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>${escapeHtml(message)}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = "0"; toast.style.transform = "translateY(8px) scale(.96)"; setTimeout(() => toast.remove(), 180) }, 2600);
+        }
+
+        async function copyBookmarklet(code, name, btnElement) {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(code);
+                } else {
+                    const textarea = document.createElement("textarea");
+                    textarea.value = code;
+                    textarea.style.position = "fixed";
+                    textarea.style.opacity = "0";
+                    document.body.appendChild(textarea);
+                    textarea.focus();
+                    textarea.select();
+                    document.execCommand("copy");
+                    textarea.remove();
+                }
+                showToast(`「${name}」をコピーしました`);
+                if (btnElement) {
+                    setButtonState(btnElement, 'success');
+                }
+            } catch (error) {
+                prompt("以下のコードをコピーしてください:", code);
+                if (btnElement) {
+                    setButtonState(btnElement, 'fail');
+                }
+            }
+        }
+
+        function setButtonState(btnElement, state) {
+            const svgUse = btnElement.querySelector("use");
+            if (!svgUse) return;
+            const originalHref = svgUse.getAttribute("href");
+
+            svgUse.setAttribute("href", `#copy-icon-${state}`);
+            if (state === 'success') {
+                btnElement.style.color = "var(--success)";
+            } else if (state === 'fail') {
+                btnElement.style.color = "var(--danger, #dc2626)";
+            }
+
+            setTimeout(() => {
+                svgUse.setAttribute("href", originalHref);
+                btnElement.style.color = "";
+            }, 1500);
+        }
+
+        function createBookmarkletCode(item) {
+            const scriptUrl = `${baseUrl}${item.file}?t=${Date.now()}`;
+            return "javascript:(function(){const s=document.createElement('script');s.src=" + JSON.stringify(scriptUrl) + ";(document.head||document.documentElement).appendChild(s);})();";
+        }
+
+        function renderBookmarklets(list = bookmarklets) {
+            const container = document.getElementById("container");
+            document.getElementById("tool-count").textContent = `${list.length} tools`;
+
+            if (!list.length) {
+                container.innerHTML = `<div class="empty"><div style="font-size:2rem;margin-bottom:8px">🔎</div>該当するBookmarkletが見つかりませんでした。</div>`;
+                return;
+            }
+
+            container.innerHTML = "";
+
+            list.forEach((item, index) => {
+                const card = document.createElement("article");
+                card.className = `card ${!item.enable ? "disabled" : ""}`;
+                card.style.animationDelay = `${Math.min(index * 35, 350)}ms`;
+
+                const code = createBookmarkletCode(item);
+                const tagsHtml = item.keywords?.length ? `<div class="keywords">${item.keywords.map(keyword => `<span class="tag">#${escapeHtml(keyword)}</span>`).join("")}</div>` : "";
+
+                card.innerHTML = `
+            <div>
+                <div class="card-header">
+                    <h3 class="card-title">${escapeHtml(item.name)}</h3>
+                    <span class="badge">${escapeHtml(item.category || "Tool")}</span>
+                </div>
+                <p class="card-desc">${escapeHtml(item.description || "")}</p>
+            </div>
+            <div class="card-footer">
+                ${tagsHtml}
+                <div class="bm-link-wrapper">
+                    <a class="bm-link" href="${escapeHtml(code)}" title="${escapeHtml(item.name)}" aria-label="${escapeHtml(item.name)} Bookmarkletを実行">
+                        <span>${escapeHtml(item.name)}</span>
+                    </a>
+                    <button class="copy-btn" title="コードをコピー" aria-label="${escapeHtml(item.name)}のコードをコピー">
+                        <svg><use href="#copy-icon"></use></svg>
+                    </button>
+                </div>
+                <span class="notice">PC：ドラッグ＆ドロップ ／ スマホ・ボタン：コピー</span>
+            </div>
+        `;
+
+                const link = card.querySelector(".bm-link");
+                const copyBtn = card.querySelector(".copy-btn");
+
+                link.addEventListener("click", event => {
+                    if (window.matchMedia("(hover:none)").matches) {
+                        event.preventDefault();
+                        copyBookmarklet(code, item.name, copyBtn);
+                    }
+                });
+
+                copyBtn.addEventListener("click", () => {
+                    copyBookmarklet(code, item.name, copyBtn);
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        function setupSearch() {
+            document.getElementById("search").addEventListener("input", event => {
+                const query = event.target.value.trim().toLowerCase();
+
+                if (!query) {
+                    renderBookmarklets();
+                    return;
+                }
+
+                const filtered = bookmarklets.filter(item => {
+                    const text = [item.name, item.description, item.category, ...(item.keywords || [])].join(" ").toLowerCase();
+                    return text.includes(query);
+                });
+
+                renderBookmarklets(filtered);
+            });
+        }
+
+        function setupTheme() {
+            const themeSwitch = document.getElementById("theme-switch");
+            const themeIcon = document.getElementById("theme-icon");
+            const root = document.documentElement;
+
+            const currentTheme = localStorage.getItem("theme");
+            if (currentTheme) {
+                root.setAttribute("data-theme", currentTheme);
+            }
+
+            themeSwitch.addEventListener("click", () => {
+                const current = root.getAttribute("data-theme");
+                let next = "";
+                if (current === "dark") {
+                    next = "light";
+                } else if (current === "light") {
+                    next = "dark";
+                } else {
+                    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                    next = prefersDark ? "light" : "dark";
+                }
+
+                if (next) {
+                    root.setAttribute("data-theme", next);
+                    localStorage.setItem("theme", next);
+                } else {
+                    root.removeAttribute("data-theme");
+                    localStorage.removeItem("theme");
+                }
+            });
+        }
+
+        async function loadBookmarklets() {
+            const container = document.getElementById("container");
+
+            try {
+                const response = await fetch("manifest.json", { cache: "no-store" });
+                if (!response.ok) throw new Error("manifest.jsonの読み込みに失敗しました");
+
+                const items = await response.json();
+                if (!Array.isArray(items)) throw new Error("manifest.jsonの形式が不正です");
+
+                bookmarklets = items;
+                renderBookmarklets();
+            } catch (error) {
+                console.error(error);
+                document.getElementById("tool-count").textContent = "Error";
+                container.innerHTML = `<div class="empty" style="color:var(--danger,#dc2626)"><div style="font-size:2rem;margin-bottom:8px">⚠</div>データの読み込みに失敗しました。</div>`;
+            }
+        }
+
+        setupSearch();
+        setupTheme();
+        loadBookmarklets();
+    </script>
+
+</body>
+
+</html>
