@@ -3,91 +3,104 @@
  * @description ページ内の動画をフルスクリーンモードで再生します
  * @category media
  * @keywords video, fullscreen, media
- * @version 1.0.0
+ * @version 1.1
  * @enable true
  * @created_at 2026-08-18
  * @updated_at 2026-08-18
  */
 
 (function () {
-    const videos = [...document.querySelectorAll("video")];
+    const videos = [...document.querySelectorAll("video")];
 
-    if (!videos.length) {
-        alert("動画が見つかりませんでした。");
-        return;
-    }
+    if (!videos.length) {
+        alert("動画が見つかりませんでした。");
+        return;
+    }
 
-    const video =
-        videos.find(v => !v.paused) ||
-        videos.find(v => v.readyState >= 2);
+    const video =
+        videos.find(v => !v.paused) ||
+        videos.find(v => v.readyState >= 2);
 
-    if (!video) {
-        alert("動画の再生準備ができていません。");
-        return;
-    }
+    if (!video) {
+        alert("動画の再生準備ができていません。");
+        return;
+    }
 
-    const play = () => {
-        const promise = video.play();
+    const wasPlaying = !video.paused;
 
-        if (promise && promise.catch) {
-            promise.catch(() => { });
-        }
-    };
+    const play = () => {
+        const promise = video.play();
 
-    if (!video._fsUniversal) {
-        video._fsUniversal = true;
+        if (promise && promise.catch) {
+            promise.catch(() => {});
+        }
+    };
 
-        video.addEventListener("webkitendfullscreen", () => {
-            setTimeout(play, 330);
-        });
+    const resumeIfNeeded = () => {
+        if (wasPlaying && video.paused) {
+            setTimeout(play, 100);
+        }
+    };
 
-        document.addEventListener("fullscreenchange", () => {
-            if (!document.fullscreenElement) {
-                setTimeout(play, 100);
-            }
-        });
+    if (!video._fsUniversal) {
+        video._fsUniversal = true;
 
-        document.addEventListener("webkitfullscreenchange", () => {
-            if (!document.webkitFullscreenElement) {
-                setTimeout(play, 100);
-            }
-        });
-    }
-    play();
+        video.addEventListener("webkitendfullscreen", () => {
+            if (wasPlaying) {
+                setTimeout(play, 330);
+            }
+        });
 
-    try {
-        if (video.requestFullscreen) {
-            const promise = video.requestFullscreen();
+        document.addEventListener("fullscreenchange", () => {
+            if (!document.fullscreenElement) {
+                resumeIfNeeded();
+            }
+        });
 
-            if (promise && promise.catch) {
-                promise.catch(() => { });
-            }
+        document.addEventListener("webkitfullscreenchange", () => {
+            if (!document.webkitFullscreenElement) {
+                resumeIfNeeded();
+            }
+        });
+    }
 
-        } else if (video.webkitEnterFullscreen) {
-            video.webkitEnterFullscreen();
+    if (wasPlaying) {
+        play();
+    }
 
-        } else if (video.webkitRequestFullscreen) {
-            video.webkitRequestFullscreen();
+    try {
+        if (video.requestFullscreen) {
+            const promise = video.requestFullscreen();
 
-        } else if (video.mozRequestFullScreen) {
-            video.mozRequestFullScreen();
+            if (promise && promise.catch) {
+                promise.catch(() => {});
+            }
 
-        } else if (video.msRequestFullscreen) {
-            video.msRequestFullscreen();
+        } else if (video.webkitEnterFullscreen) {
+            video.webkitEnterFullscreen();
 
-        } else {
-            alert("このブラウザでは動画のフルスクリーンに対応していません。");
-        }
+        } else if (video.webkitRequestFullscreen) {
+            video.webkitRequestFullscreen();
 
-    } catch (error) {
-        try {
-            if (video.webkitEnterFullscreen) {
-                video.webkitEnterFullscreen();
-            } else {
-                throw error;
-            }
-        } catch (error2) {
-            alert("[エラー]\n" + (error2.message || error2));
-        }
-    }
+        } else if (video.mozRequestFullScreen) {
+            video.mozRequestFullScreen();
+
+        } else if (video.msRequestFullscreen) {
+            video.msRequestFullscreen();
+
+        } else {
+            alert("このブラウザでは動画のフルスクリーンに対応していません。");
+        }
+
+    } catch (error) {
+        try {
+            if (video.webkitEnterFullscreen) {
+                video.webkitEnterFullscreen();
+            } else {
+                throw error;
+            }
+        } catch (error2) {
+            alert("[エラー]\n" + (error2.message || error2));
+        }
+    }
 })();
