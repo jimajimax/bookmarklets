@@ -1,9 +1,9 @@
 /**
  * @name 動画フルスクリーン
- * @description ページ内の動画をフルスクリーンモードで再生します
+ * @description ページ内の動画をフルスクリーンモードで再生します。複数動画がある場合、再生中の動画が優先されます
  * @category media
  * @keywords video, fullscreen, media
- * @version 1.2
+ * @version 1.3
  * @enable true
  * @created_at 2026-08-18
  * @updated_at 2026-08-18
