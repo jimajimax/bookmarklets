@@ -278,6 +278,13 @@
             line-height: 1.35
         }
 
+        .card-version {
+            font-size: .75rem;
+            font-weight: 500;
+            color: var(--muted);
+            margin-left: 6px
+        }
+
         .badge {
             flex: none;
             padding: 4px 9px;
@@ -1032,8 +1039,11 @@
         }
 
         function createBookmarkletCode(item) {
+            if (item.bookmarklet) {
+                return item.bookmarklet;
+            }
             const scriptUrl = `${baseUrl}${item.file}?t=${Date.now()}`;
-            return "javascript:(function(){const s=document.createElement('script');s.src=" + JSON.stringify(scriptUrl) + ";(document.head||document.documentElement).appendChild(s);})();";
+            return `javascript:/* v${item.version || "1.0"} */(function(){const s=document.createElement('script');s.src=${JSON.stringify(scriptUrl)};(document.head||document.documentElement).appendChild(s);})();`;
         }
 
         function renderBookmarklets(list = bookmarklets) {
@@ -1041,7 +1051,7 @@
             document.getElementById("tool-count").textContent = `${list.length} tools`;
 
             if (!list.length) {
-                container.innerHTML = `<div class="empty"><div style="font-size:2rem;margin-bottom:8px">🔎</div>該当するBookmarkletが見つかりませんでした。</div>`;
+                container.innerHTML = `<div class="empty"><div style="font-size:2rem;margin-bottom:8px"></div>該当するBookmarkletが見つかりませんでした。</div>`;
                 return;
             }
 
@@ -1058,7 +1068,7 @@
                 card.innerHTML = `
             <div>
                 <div class="card-header">
-                    <h3 class="card-title">${escapeHtml(item.name)}</h3>
+                    <h3 class="card-title">${escapeHtml(item.name)}<span class="card-version">v${escapeHtml(item.version || "1.0")}</span></h3>
                     <span class="badge">${escapeHtml(item.category || "Tool")}</span>
                 </div>
                 <p class="card-desc">${escapeHtml(item.description || "")}</p>
@@ -1115,7 +1125,6 @@
 
         function setupTheme() {
             const themeSwitch = document.getElementById("theme-switch");
-            const themeIcon = document.getElementById("theme-icon");
             const root = document.documentElement;
 
             const currentTheme = localStorage.getItem("theme");
