@@ -3,7 +3,7 @@
  * @description X / Twitterの投稿のツイート時刻をミリ秒まで表示します
  * @category other
  * @keywords x, twitter
- * @version 1.0
+ * @version 1.1
  * @enable true
  * @created_at 2026-08-18
  * @updated_at 2026-08-18
@@ -11,7 +11,7 @@
 
 (function () {
    if (!/^(x\.com|twitter\.com)$/.test(location.hostname)) {
-      functionalert("x.comまたはtwitter.comで実行してください");
+      alert("x.comまたはtwitter.comで実行してください");
       return;
    }
 
