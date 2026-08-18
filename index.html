@@ -314,13 +314,35 @@
 
         .card-desc {
             min-height: 66px;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
             color: var(--sub);
             font-size: .86rem;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden
+        }
+
+        .card-sublinks {
+            display: flex;
+            align-items: center;
+            margin-bottom: 14px
+        }
+
+        .card-code-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: .75rem;
+            font-weight: 600;
+            transition: color .18s
+        }
+
+        .card-code-link:hover {
+            color: var(--text);
+            text-decoration: underline
         }
 
         .keywords {
@@ -435,7 +457,18 @@
             border: 1px dashed var(--border);
             border-radius: var(--radius);
             color: var(--sub);
-            text-align: center
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px
+        }
+
+        .empty-icon {
+            width: 32px;
+            height: 32px;
+            color: var(--muted)
         }
 
         .guide {
@@ -874,7 +907,13 @@
         </div>
 
         <div id="container">
-            <div class="empty">ツールを読み込んでいます…</div>
+            <div class="empty">
+                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
+                </svg>
+                <span>ツールを読み込んでいます…</span>
+            </div>
         </div>
 
         <section class="guide">
@@ -977,7 +1016,7 @@
                     <div class="footer-nav-col">
                         <span class="footer-nav-title">Links</span>
                         <a href="https://github.com/jimajimax/bookmarklets/" target="_blank"
-                            rel="noopener noreferrer">GitHub ↗</a>
+                            rel="noopener noreferrer">GitHub Repository ↗</a>
                         <a href="https://x.com/messages/compose?recipient_id=1817905403663171584" target="_blank"
                             rel="noopener noreferrer">Contact ↗</a>
                     </div>
@@ -1006,6 +1045,12 @@
         let bookmarklets = [];
 
         function escapeHtml(value) { return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") }
+
+        function normalizeKana(str) {
+            return String(str ?? "")
+                .toLowerCase()
+                .replace(/[\u3041-\u3096]/g, match => String.fromCharCode(match.charCodeAt(0) + 0x60));
+        }
 
         function showToast(message) {
             const container = document.getElementById("toast-container");
@@ -1074,7 +1119,14 @@
             document.getElementById("tool-count").textContent = `${list.length} tools`;
 
             if (!list.length) {
-                container.innerHTML = `<div class="empty"><div style="font-size:2rem;margin-bottom:8px">🔎</div>該当するBookmarkletが見つかりませんでした。</div>`;
+                container.innerHTML = `
+                    <div class="empty">
+                        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="m20 20-4-4"></path>
+                        </svg>
+                        <span>該当するBookmarkletが見つかりませんでした。</span>
+                    </div>`;
                 return;
             }
 
@@ -1088,6 +1140,7 @@
                 const code = createBookmarkletCode(item);
                 const tagsHtml = item.keywords?.length ? `<div class="keywords">${item.keywords.map(keyword => `<span class="tag">#${escapeHtml(keyword)}</span>`).join("")}</div>` : "";
                 const updatedHtml = item.updated_at ? `<span class="card-meta-dot">•</span><span class="card-updated">更新: ${escapeHtml(item.updated_at)}</span>` : "";
+                const directJsUrl = `${baseUrl}${item.file}`;
 
                 card.innerHTML = `
             <div>
@@ -1100,6 +1153,9 @@
                     ${updatedHtml}
                 </div>
                 <p class="card-desc">${escapeHtml(item.description || "")}</p>
+                <div class="card-sublinks">
+                    <a class="card-code-link" href="${escapeHtml(directJsUrl)}" target="_blank" rel="noopener noreferrer">コードを見る ↗</a>
+                </div>
             </div>
             <div class="card-footer">
                 ${tagsHtml}
@@ -1133,21 +1189,34 @@
             });
         }
 
+        function filterList(query) {
+            const normalizedQuery = normalizeKana(query.trim());
+
+            if (!normalizedQuery) {
+                renderBookmarklets();
+                return;
+            }
+
+            const filtered = bookmarklets.filter(item => {
+                const text = [item.name, item.description, item.category, ...(item.keywords || [])].join(" ");
+                return normalizeKana(text).includes(normalizedQuery);
+            });
+
+            renderBookmarklets(filtered);
+        }
+
         function setupSearch() {
-            document.getElementById("search").addEventListener("input", event => {
-                const query = event.target.value.trim().toLowerCase();
+            const searchInput = document.getElementById("search");
 
-                if (!query) {
-                    renderBookmarklets();
-                    return;
-                }
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialQuery = urlParams.get("s");
+            if (initialQuery) {
+                searchInput.value = initialQuery;
+                filterList(initialQuery);
+            }
 
-                const filtered = bookmarklets.filter(item => {
-                    const text = [item.name, item.description, item.category, ...(item.keywords || [])].join(" ").toLowerCase();
-                    return text.includes(query);
-                });
-
-                renderBookmarklets(filtered);
+            searchInput.addEventListener("input", event => {
+                filterList(event.target.value);
             });
         }
 
@@ -1193,11 +1262,24 @@
                 if (!Array.isArray(items)) throw new Error("manifest.jsonの形式が不正です");
 
                 bookmarklets = items;
-                renderBookmarklets();
+
+                const searchInput = document.getElementById("search");
+                if (searchInput.value) {
+                    filterList(searchInput.value);
+                } else {
+                    renderBookmarklets();
+                }
             } catch (error) {
                 console.error(error);
                 document.getElementById("tool-count").textContent = "Error";
-                container.innerHTML = `<div class="empty" style="color:var(--danger,#dc2626)"><div style="font-size:2rem;margin-bottom:8px">⚠</div>データの読み込みに失敗しました。</div>`;
+                container.innerHTML = `
+                    <div class="empty" style="color:var(--danger,#dc2626)">
+                        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        <span>データの読み込みに失敗しました。</span>
+                    </div>`;
             }
         }
 
