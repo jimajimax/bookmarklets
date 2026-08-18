@@ -4,10 +4,11 @@ on:
   push:
     paths:
       - 'js/**'
+      - 'scripts/**'
   workflow_dispatch:
 
 permissions:
-  contents: write 
+  contents: write
 
 jobs:
   build:
@@ -20,6 +21,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Install Terser directly
+        run: npm install terser
 
       - name: Generate JSON manifest
         run: |
