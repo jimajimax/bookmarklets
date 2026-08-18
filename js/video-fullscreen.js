@@ -3,7 +3,7 @@
  * @description ページ内の動画をフルスクリーンモードで再生します
  * @category media
  * @keywords video, fullscreen, media
- * @version 1.1
+ * @version 1.2
  * @enable true
  * @created_at 2026-08-18
  * @updated_at 2026-08-18
@@ -17,9 +17,7 @@
         return;
     }
 
-    const video =
-        videos.find(v => !v.paused) ||
-        videos.find(v => v.readyState >= 2);
+    const video = videos.find(v => !v.paused) || videos.find(v => v.readyState >= 2);
 
     if (!video) {
         alert("動画の再生準備ができていません。");
