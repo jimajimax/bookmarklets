@@ -52,6 +52,24 @@
     "bookmarklet": "javascript:(()=>{let e=!1;const t=()=>{e||(e=!0,l(),function(){const e=[...document.querySelectorAll(\"video\")];if(!e.length)return void alert(\"動画が見つかりませんでした。\");const t=e.find(e=>!e.paused)||e.find(e=>e.readyState>=2);if(!t)return void alert(\"動画の再生準備ができていません。\");const n=!t.paused,c=()=>{const e=t.play();e&&e.catch&&e.catch(()=>{})},l=()=>{n&&t.paused&&setTimeout(c,100)};t._fsUniversal||(t._fsUniversal=!0,t.addEventListener(\"webkitendfullscreen\",()=>{n&&setTimeout(c,330)}),document.addEventListener(\"fullscreenchange\",()=>{document.fullscreenElement||l()}),document.addEventListener(\"webkitfullscreenchange\",()=>{document.webkitFullscreenElement||l()})),n&&c();try{if(t.requestFullscreen){const e=t.requestFullscreen();e&&e.catch&&e.catch(()=>{})}else t.webkitEnterFullscreen?t.webkitEnterFullscreen():t.webkitRequestFullscreen?t.webkitRequestFullscreen():t.mozRequestFullScreen?t.mozRequestFullScreen():t.msRequestFullscreen?t.msRequestFullscreen():alert(\"このブラウザでは動画のフルスクリーンに対応していません。\")}catch(e){try{if(!t.webkitEnterFullscreen)throw e;t.webkitEnterFullscreen()}catch(e){alert(\"[エラー]\\n\"+(e.message||e))}}}())},n=()=>{e||(e=!0,l())},c=e=>{e.blockedURI&&e.blockedURI.includes(\"jimajimax.github.io\")&&t()},l=()=>{document.removeEventListener(\"securitypolicyviolation\",c)};document.addEventListener(\"securitypolicyviolation\",c);try{const e=document.createElement(\"script\");e.src=\"https://jimajimax.github.io/bookmarklets/js/video-fullscreen.js?t=\"+Date.now(),e.onload=n,e.onerror=t,(document.head||document.documentElement).appendChild(e)}catch(e){t()}})();/*(最新vはhttps://jimajimax.github.io/bookmarklets/js/video-fullscreen.jsの@versionに記載) このinlineはv1.3*/"
   },
   {
+    "name": "動画ピクチャーインピクチャー",
+    "description": "ページ内の動画をピクチャーインピクチャーモードで再生します。複数動画がある場合、再生中の動画が優先されます",
+    "category": "media",
+    "keywords": [
+      "video",
+      "picture-in-picture",
+      "pip",
+      "media"
+    ],
+    "version": "1.0",
+    "enable": true,
+    "created_at": "2026-08-18",
+    "updated_at": "2026-08-18",
+    "file": "js/video-pip.js",
+    "slug": "video-pip",
+    "bookmarklet": "javascript:(()=>{let e=!1;const t=()=>{e||(e=!0,i(),function(){const e=[...document.querySelectorAll(\"video\")];if(!e.length)return void alert(\"動画が見つかりませんでした。\");const t=e.find(e=>!e.paused)||e.find(e=>e.readyState>=2);if(t)try{if(!document.pictureInPictureEnabled)return void alert(\"このブラウザではピクチャーインピクチャーに対応していません。\");document.pictureInPictureElement?document.exitPictureInPicture().catch(()=>{}):((()=>{const e=t.play();e&&e.catch&&e.catch(()=>{})})(),t.requestPictureInPicture().catch(e=>{alert(\"[エラー]\\n\"+(e.message||e))}))}catch(e){alert(\"[エラー]\\n\"+(e.message||e))}else alert(\"動画の再生準備ができていません。\")}())},c=()=>{e||(e=!0,i())},n=e=>{e.blockedURI&&e.blockedURI.includes(\"jimajimax.github.io\")&&t()},i=()=>{document.removeEventListener(\"securitypolicyviolation\",n)};document.addEventListener(\"securitypolicyviolation\",n);try{const e=document.createElement(\"script\");e.src=\"https://jimajimax.github.io/bookmarklets/js/video-pip.js?t=\"+Date.now(),e.onload=c,e.onerror=t,(document.head||document.documentElement).appendChild(e)}catch(e){t()}})();/*(最新vはhttps://jimajimax.github.io/bookmarklets/js/video-pip.jsの@versionに記載) このinlineはv1.0*/"
+  },
+  {
     "name": "動画速度変更",
     "description": "ページ内の動画の速度を自由に変更できます。複数動画がある場合、再生中の動画が優先されます",
     "category": "media",
