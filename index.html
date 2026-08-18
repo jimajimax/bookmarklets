@@ -268,7 +268,7 @@
             align-items: flex-start;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 12px
+            margin-bottom: 8px
         }
 
         .card-title {
@@ -278,11 +278,26 @@
             line-height: 1.35
         }
 
-        .card-version {
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
             font-size: .75rem;
-            font-weight: 500;
-            color: var(--muted);
-            margin-left: 6px
+            color: var(--muted)
+        }
+
+        .card-version {
+            font-weight: 600;
+            color: var(--sub)
+        }
+
+        .card-meta-dot {
+            opacity: .6
+        }
+
+        .card-updated {
+            white-space: nowrap
         }
 
         .badge {
@@ -1043,7 +1058,7 @@
                 return item.bookmarklet;
             }
             const scriptUrl = `${baseUrl}${item.file}?t=${Date.now()}`;
-            return `javascript:/* v${item.version || "1.0"} */(function(){const s=document.createElement('script');s.src=${JSON.stringify(scriptUrl)};(document.head||document.documentElement).appendChild(s);})();`;
+            return `javascript:(function(){const s=document.createElement('script');s.src=${JSON.stringify(scriptUrl)};(document.head||document.documentElement).appendChild(s);})();/* inline_v${item.version || "1.0"} */`;
         }
 
         function renderBookmarklets(list = bookmarklets) {
@@ -1051,7 +1066,7 @@
             document.getElementById("tool-count").textContent = `${list.length} tools`;
 
             if (!list.length) {
-                container.innerHTML = `<div class="empty"><div style="font-size:2rem;margin-bottom:8px"></div>該当するBookmarkletが見つかりませんでした。</div>`;
+                container.innerHTML = `<div class="empty"><div style="font-size:2rem;margin-bottom:8px">🔎</div>該当するBookmarkletが見つかりませんでした。</div>`;
                 return;
             }
 
@@ -1064,12 +1079,17 @@
 
                 const code = createBookmarkletCode(item);
                 const tagsHtml = item.keywords?.length ? `<div class="keywords">${item.keywords.map(keyword => `<span class="tag">#${escapeHtml(keyword)}</span>`).join("")}</div>` : "";
+                const updatedHtml = item.updated_at ? `<span class="card-meta-dot">•</span><span class="card-updated">更新: ${escapeHtml(item.updated_at)}</span>` : "";
 
                 card.innerHTML = `
             <div>
                 <div class="card-header">
-                    <h3 class="card-title">${escapeHtml(item.name)}<span class="card-version">v${escapeHtml(item.version || "1.0")}</span></h3>
+                    <h3 class="card-title">${escapeHtml(item.name)}</h3>
                     <span class="badge">${escapeHtml(item.category || "Tool")}</span>
+                </div>
+                <div class="card-meta">
+                    <span class="card-version">v${escapeHtml(item.version || "1.0")}</span>
+                    ${updatedHtml}
                 </div>
                 <p class="card-desc">${escapeHtml(item.description || "")}</p>
             </div>
@@ -1083,7 +1103,7 @@
                         <svg><use href="#copy-icon"></use></svg>
                     </button>
                 </div>
-                <span class="notice">PC：ドラッグ＆ドロップ ／ スマホ・ボタン：コピー</span>
+                <span class="notice">PC：ドラッグ＆ドロップ ／ スマホ：ボタンをクリック</span>
             </div>
         `;
 
