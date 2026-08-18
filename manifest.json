@@ -1,5 +1,24 @@
 [
   {
+    "name": "歌詞コピー",
+    "description": "www.uta-net.com または www.google.com の歌詞ページから歌詞とURLを自動で抽出してクリップボードにコピーします",
+    "category": "media",
+    "keywords": [
+      "song",
+      "media",
+      "lyrics",
+      "utanet",
+      "google"
+    ],
+    "version": "1.0",
+    "enable": true,
+    "created_at": "2026-08-18",
+    "updated_at": "2026-08-18",
+    "file": "js/lyrics-copy.js",
+    "slug": "lyrics-copy",
+    "bookmarklet": "javascript:(()=>{let e=!1;const t=()=>{e||(e=!0,r(),function(){let e;if(\"www.uta-net.com\"===location.hostname){const t=document.getElementById(\"kashi_area\");if(!t)return void alert(\"歌詞が見つかりませんでした。\");e=t.innerHTML.replace(/<br\\s*\\/?>/gi,\"\\n\")}else{if(\"www.google.com\"!==location.hostname)return void alert('\"www.uta-net.com\" または \"www.google.com\" の歌詞ページで使用してください。');{const t=document.querySelectorAll('div[jsname=\"WbKHeb\"]');if(!(t.length>0))return void alert(\"歌詞が見つかりませんでした。\");{const o=Array.from(t).map(e=>e.innerHTML.replace(/<br\\s*\\/?>/gi,\"\\n\").replace(/<\\/span\\s*>/gi,\"\\n\").replace(/<div[^>]*>/gi,\"\").replace(/<\\/div\\s*>/gi,\"\\n\\n\").replace(/<[^>]+>/g,\"\").replace(/\\n{3,}/g,\"\\n\\n\").trim()).join(\"\\n\\n\");e=o}}}console.log(e),navigator.clipboard.writeText(e).then(function(){alert(\"歌詞をクリップボードにコピーしました🎶\")}).catch(function(t){console.error(\"コピーERR:\",t),\"NotAllowedError\"!==t.name?navigator.share({title:\"歌詞をコピー・共有\",text:e}).catch(function(e){console.error(\"共有ERR:\",e)}):alert(\"画面を一度タップ・クリックしてから再度実行してください。\")})}())},o=()=>{e||(e=!0,r())},n=e=>{e.blockedURI&&e.blockedURI.includes(\"jimajimax.github.io\")&&t()},r=()=>{document.removeEventListener(\"securitypolicyviolation\",n)};document.addEventListener(\"securitypolicyviolation\",n);try{const e=document.createElement(\"script\");e.src=\"https://jimajimax.github.io/bookmarklets/js/lyrics-copy.js?t=\"+Date.now(),e.onload=o,e.onerror=t,(document.head||document.documentElement).appendChild(e)}catch(e){t()}})();/*(最新vはhttps://jimajimax.github.io/bookmarklets/js/lyrics-copy.jsの@versionに記載) このinlineはv1.0*/"
+  },
+  {
     "name": "ツイート時刻表示",
     "description": "X / Twitterの投稿のツイート時刻をミリ秒まで表示します",
     "category": "other",
