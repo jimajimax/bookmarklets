@@ -514,12 +514,18 @@
             font-size: .8rem
         }
 
-        .privacy {
+        .security-warning {
             max-width: 760px;
-            margin: 24px auto 0;
-            color: var(--muted);
-            text-align: center;
-            font-size: .76rem
+            margin: 32px auto 0;
+            padding: 18px 22px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--surface);
+            color: var(--sub);
+            font-size: .82rem;
+            line-height: 1.75;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+            white-space: pre-line
         }
 
         footer {
@@ -952,7 +958,10 @@
                 </details>
             </div>
 
-            <p class="privacy">個人情報を収集・保存することはありません。Bookmarkletの実行は利用者ご自身の責任において行ってください。</p>
+            <div class="security-warning">ブックマークレットは、JavaScriptを直接ブラウザで実行するためリスクが伴います。
+悪意のあるコードを実行してしまうと、開いているページ上の個人情報やCookieが盗まれたり、勝手に別の操作をされたりする危険があります。
+そのため、本来はコードの中身を理解してから使うべきです。現代ではAI（LLM）に安全かどうか内容を聞くのも手かもしれません。ネットで見つけたよく分からないコードや、中身が理解できないものを安易にコピーして使うのは避けたほうが安全です。
+このページに記載されているブックマークレットは個人情報を収集・保存することはありませんが、一度AI（LLM）に安全かどうか内容を聞くと良いでしょう。</div>
         </section>
     </main>
 
