@@ -515,7 +515,6 @@
         }
 
         .security-warning {
-            max-width: 760px;
             margin: 32px auto 0;
             padding: 18px 22px;
             border: 1px solid var(--border);
@@ -529,7 +528,7 @@
         }
 
         footer {
-            margin-top: 120px;
+            margin-top: 70px;
             padding: 80px 20px 48px;
             border-top: 1px solid var(--border);
             background: var(--surface);
@@ -546,7 +545,7 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
+            width: 95vw;
             height: 3px;
             background: linear-gradient(90deg, transparent, var(--primary), transparent);
             border-radius: 99px
@@ -1097,7 +1096,7 @@
                     <span class="badge">${escapeHtml(item.category || "Tool")}</span>
                 </div>
                 <div class="card-meta">
-                    <span class="card-version">v${escapeHtml(item.version || "1.0")}</span>
+                    <span class="card-version">ver. ${escapeHtml(item.version || "1.0")}</span>
                     ${updatedHtml}
                 </div>
                 <p class="card-desc">${escapeHtml(item.description || "")}</p>
