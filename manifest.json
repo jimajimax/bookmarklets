@@ -7,13 +7,13 @@
       "x",
       "twitter"
     ],
-    "version": "1.0",
+    "version": "1.1",
     "enable": true,
     "created_at": "2026-08-18",
     "updated_at": "2026-08-18",
     "file": "js/tweet-time.js",
     "slug": "tweet-time",
-    "bookmarklet": "javascript:(()=>{let t=!1;const e=()=>{t||(t=!0,i(),function(){if(!/^(x\\.com|twitter\\.com)$/.test(location.hostname))return void functionalert(\"x.comまたはtwitter.comで実行してください\");const t=location.pathname.match(/^\\/([^/]+)\\/status\\/(\\d+)/);if(!t)return void alert('投稿IDがURLに含まれていません。\\nURLに\"status\"が含まれるようにしてください');const e=t[1],o=BigInt(t[2]);if(o<300000000000000n)return void alert(`投稿が2010年11月4日以前のため取得できませんでした。\\n${location.href}`);const n=Number(1288834974657n+(o>>22n)),i=new Date(n),c=[\"日\",\"月\",\"火\",\"水\",\"木\",\"金\",\"土\"][i.getDay()],a=i.getMilliseconds().toString().padStart(3,\"0\"),r=`${i.getFullYear()}年${i.getMonth()+1}月${i.getDate()}日 (${c}) ${i.getHours()}時${i.getMinutes()}分${i.getSeconds()}秒${a}`;alert(`URL: ${location.href}\\nID: @${e}\\n投稿時刻: ${r}`)}())},o=()=>{t||(t=!0,i())},n=t=>{t.blockedURI&&t.blockedURI.includes(\"jimajimax.github.io\")&&e()},i=()=>{document.removeEventListener(\"securitypolicyviolation\",n)};document.addEventListener(\"securitypolicyviolation\",n);try{const t=document.createElement(\"script\");t.src=\"https://jimajimax.github.io/bookmarklets/js/tweet-time.js?t=\"+Date.now(),t.onload=o,t.onerror=e,(document.head||document.documentElement).appendChild(t)}catch(t){e()}})();/*(最新vはhttps://jimajimax.github.io/bookmarklets/js/tweet-time.jsの@versionに記載) このinlineはv1.0*/"
+    "bookmarklet": "javascript:(()=>{let t=!1;const e=()=>{t||(t=!0,i(),function(){if(!/^(x\\.com|twitter\\.com)$/.test(location.hostname))return void alert(\"x.comまたはtwitter.comで実行してください\");const t=location.pathname.match(/^\\/([^/]+)\\/status\\/(\\d+)/);if(!t)return void alert('投稿IDがURLに含まれていません。\\nURLに\"status\"が含まれるようにしてください');const e=t[1],o=BigInt(t[2]);if(o<300000000000000n)return void alert(`投稿が2010年11月4日以前のため取得できませんでした。\\n${location.href}`);const n=Number(1288834974657n+(o>>22n)),i=new Date(n),c=[\"日\",\"月\",\"火\",\"水\",\"木\",\"金\",\"土\"][i.getDay()],a=i.getMilliseconds().toString().padStart(3,\"0\"),r=`${i.getFullYear()}年${i.getMonth()+1}月${i.getDate()}日 (${c}) ${i.getHours()}時${i.getMinutes()}分${i.getSeconds()}秒${a}`;alert(`URL: ${location.href}\\nID: @${e}\\n投稿時刻: ${r}`)}())},o=()=>{t||(t=!0,i())},n=t=>{t.blockedURI&&t.blockedURI.includes(\"jimajimax.github.io\")&&e()},i=()=>{document.removeEventListener(\"securitypolicyviolation\",n)};document.addEventListener(\"securitypolicyviolation\",n);try{const t=document.createElement(\"script\");t.src=\"https://jimajimax.github.io/bookmarklets/js/tweet-time.js?t=\"+Date.now(),t.onload=o,t.onerror=e,(document.head||document.documentElement).appendChild(t)}catch(t){e()}})();/*(最新vはhttps://jimajimax.github.io/bookmarklets/js/tweet-time.jsの@versionに記載) このinlineはv1.1*/"
   },
   {
     "name": "動画フルスクリーン",
