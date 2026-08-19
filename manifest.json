@@ -35,6 +35,23 @@
     "bookmarklet": "javascript:(()=>{let e=!1;const t=()=>{e||(e=!0,r(),function(){let e;if(\"www.uta-net.com\"===location.hostname){const t=document.getElementById(\"kashi_area\");if(!t)return void alert(\"歌詞が見つかりませんでした。\");e=t.innerHTML.replace(/<br\\s*\\/?>/gi,\"\\n\")}else{if(\"www.google.com\"!==location.hostname)return void alert('\"www.uta-net.com\" または \"www.google.com\" の歌詞ページで使用してください。');{const t=document.querySelectorAll('div[jsname=\"WbKHeb\"]');if(!(t.length>0))return void alert(\"歌詞が見つかりませんでした。\");{const n=Array.from(t).map(e=>e.innerHTML.replace(/<br\\s*\\/?>/gi,\"\\n\").replace(/<\\/span\\s*>/gi,\"\\n\").replace(/<div[^>]*>/gi,\"\").replace(/<\\/div\\s*>/gi,\"\\n\\n\").replace(/<[^>]+>/g,\"\").replace(/\\n{3,}/g,\"\\n\\n\").trim()).join(\"\\n\\n\");e=n}}}navigator.clipboard.writeText(e).then(function(){alert(\"歌詞をクリップボードにコピーしました🎶\")}).catch(function(t){console.error(\"コピーERR:\",t),\"NotAllowedError\"!==t.name?navigator.share&&navigator.share({title:\"歌詞をコピー・共有\",text:e}).catch(function(e){console.error(\"共有ERR:\",e)}):function(t){const n=document.getElementById(\"__lyrics_copy_modal__\");n&&n.remove();const o=document.createElement(\"div\");o.id=\"__lyrics_copy_modal__\",o.style.cssText=\"position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 999999; display: flex; align-items: center; justify-content: center;\";const r=document.createElement(\"div\");r.style.cssText=\"background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); text-align: center; max-width: 90%; width: 350px; font-family: sans-serif;\";const i=document.createElement(\"p\");i.innerText=\"下のボタンを押して歌詞をコピーしてください。\",i.style.cssText=\"margin: 0 0 15px 0; font-size: 14px; color: #333; line-height: 1.5; white-space: pre-line;\";const c=document.createElement(\"button\");c.innerText=\"歌詞をコピーする\",c.style.cssText=\"background: #4f46e5; color: #fff; border: none; padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; margin-bottom: 8px;\";const a=document.createElement(\"button\");a.innerText=\"閉じる\",a.style.cssText=\"background: #333; color: #eee; border: none; padding: 6px; border-radius: 5px; font-size: 12px; cursor: pointer; width: 100%;\",c.onclick=function(){navigator.clipboard.writeText(t).then(function(){alert(\"歌詞をクリップボードにコピーしました🎶\"),o.remove()}).catch(function(t){console.error(\"手動コピーERR:\",t),navigator.share&&navigator.share({title:\"歌詞をコピー・共有\",text:e}).catch(function(e){console.error(\"共有ERR:\",e)})})},a.onclick=function(){o.remove()},r.appendChild(i),r.appendChild(c),r.appendChild(a),o.appendChild(r),document.body.appendChild(o)}(e)})}())},n=()=>{e||(e=!0,r())},o=e=>{e.blockedURI&&e.blockedURI.includes(\"jimajimax.github.io\")&&t()},r=()=>{document.removeEventListener(\"securitypolicyviolation\",o)};document.addEventListener(\"securitypolicyviolation\",o);try{const e=document.createElement(\"script\");e.src=\"https://jimajimax.github.io/bookmarklets/js/lyrics-copy.js?t=\"+Date.now(),e.onload=n,e.onerror=t,(document.head||document.documentElement).appendChild(e)}catch(e){t()}})();/*(最新vはhttps://jimajimax.github.io/bookmarklets/js/lyrics-copy.jsの@versionに記載) このinlineはv1.1*/"
   },
   {
+    "name": "グレースケール切り替え",
+    "description": "Webページの表示をモノクロに切り替えます",
+    "category": "utility",
+    "keywords": [
+      "html",
+      "css",
+      "filter"
+    ],
+    "version": "1.0",
+    "enable": true,
+    "created_at": "2026-08-20",
+    "updated_at": "2026-08-20",
+    "file": "js/page-monochrome.js",
+    "slug": "page-monochrome",
+    "bookmarklet": "javascript:(()=>{let e=!1;const t=()=>{e||(e=!0,n(),function(){let e=document.querySelector(\".grayscale-style\");if(e)e.remove();else{const e=document.createElement(\"style\");e.innerHTML=\"html{-webkit-filter:grayscale(100%);filter:grayscale(100%);}\",e.classList.add(\"grayscale-style\"),document.head.appendChild(e)}}())},o=()=>{e||(e=!0,n())},c=e=>{e.blockedURI&&e.blockedURI.includes(\"jimajimax.github.io\")&&t()},n=()=>{document.removeEventListener(\"securitypolicyviolation\",c)};document.addEventListener(\"securitypolicyviolation\",c);try{const e=document.createElement(\"script\");e.src=\"https://jimajimax.github.io/bookmarklets/js/page-monochrome.js?t=\"+Date.now(),e.onload=o,e.onerror=t,(document.head||document.documentElement).appendChild(e)}catch(e){t()}})();/*(最新vはhttps://jimajimax.github.io/bookmarklets/js/page-monochrome.jsの@versionに記載) このinlineはv1.0*/"
+  },
+  {
     "name": "ツイート時刻表示",
     "description": "X / Twitterの投稿のツイート時刻をミリ秒まで表示します",
     "category": "other",
